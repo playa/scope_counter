@@ -17,6 +17,7 @@ Usage
 --------
 
 Create columns in db according to scopes in your model ("#{scope_name}_count").
+
 ```ruby
     t.integer :usefull_count, :default => 0
     t.integer :useless_count, :default => 0
