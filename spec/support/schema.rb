@@ -3,8 +3,9 @@ ActiveRecord::Schema.define do
 
   create_table :advices, :force => true do |t|
     t.string :text
-    t.integer :usefull_count, :default => 0
-    t.integer :useless_count, :default => 0
+    t.integer :utilities_count, :default => 0
+    t.integer :usefull_utilities_count, :default => 0
+    t.integer :useless_utilities_count, :default => 0
   end
 
   create_table :utilities, :force => true do |t|

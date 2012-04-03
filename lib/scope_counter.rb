@@ -11,11 +11,17 @@ module ScopeCounter
         def add_counter_cache_callbacks(reflection)
           if Array === options[:counter_cache]
             name = self.name
-            options[:counter_cache].each do |scope|
-              cache_column = "#{scope}_count"
+            counter_cache_options = options[:counter_cache]
+            counter_cache_options.each do |scope|
+              if scope == :all
+                options[:counter_cache] = true
+                old_add_counter_cache_callbacks(reflection)
+                next
+              end 
+              cache_column = "#{scope}_#{model.table_name}_count"
               
               method_name = "belongs_to_counter_cache_after_create_for_#{scope}"
-              model.redefine_method(method_name) do
+              mixin.redefine_method(method_name) do
                 record = send(name)
                 record.class.increment_counter(cache_column, record.id) unless record.nil?
               end
@@ -28,7 +34,7 @@ module ScopeCounter
               model.after_create(method_name, :if => :"#{in_scope_method}")
       
               method_name = "belongs_to_counter_cache_before_destroy_for_#{scope}"
-              model.redefine_method(method_name) do
+              mixin.redefine_method(method_name) do
                 record = send(name)
                 record.class.decrement_counter(cache_column, record.id) unless record.nil?
               end

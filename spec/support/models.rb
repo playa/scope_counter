@@ -3,7 +3,7 @@ class Advice  < ActiveRecord::Base
 end
 
 class Utility  < ActiveRecord::Base
-  belongs_to :advice, :counter_cache => [:usefull, :useless]
+  belongs_to :advice, :counter_cache => [:all,:usefull, :useless]
   scope :usefull, where(:usefull => true)
   scope :useless, where(:usefull => false)
 end
